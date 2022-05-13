@@ -87,7 +87,7 @@ TOUCH_MOVE = '2'
 img=Image.open(IMG)
 SCREEN_SIZE = img.size
 X_PER, Y_PER, X_INV, Y_INV = 1, 1, 1, 1
-X_INIT = SCREEN_SIZE[0] / 1.9
+X_INIT = SCREEN_SIZE[0] * 0.435 # / 1.9
 Y_INIT = SCREEN_SIZE[1] * 0.75
 CUST_RES = SCREEN_SIZE
 log.info(f'Image "{IMG}" loaded and screen size set to {SCREEN_SIZE}.')
@@ -109,7 +109,7 @@ async def input_monitor():
     This is the main monitoring module used to map key presses and mouse movement to touch API events for the iDevice.
     """
     # Indicate starting/reset coordinates and thresholds by percentage for mouse movement
-    x_perc = (.70, .30)
+    x_perc = (.60, .27) # (.70, .30)
     x = X_INIT
     y_perc = (.93, .50)
     y = Y_INIT
@@ -156,6 +156,7 @@ async def input_monitor():
                 if float(y / SCREEN_SIZE[1]) <= y_perc[1]:
                     y = int(SCREEN_SIZE[1] * y_perc[1])
 
+
             x_at_boundary = x in (int(SCREEN_SIZE[0] * x_perc[0]), int(SCREEN_SIZE[0] * x_perc[1]))
             y_at_boundary = y in (int(SCREEN_SIZE[1] * y_perc[0]), int(SCREEN_SIZE[1] * y_perc[1]))
             if x_at_boundary or y_at_boundary:
@@ -163,7 +164,7 @@ async def input_monitor():
                 # await sender(None, f"{TOUCH_TASK}{SINGLE_EVENT}{TOUCH_DOWN}{MOUSE_FINGER}", f"{'%04d' % y}0", f"{'%04d' % x}0")
                 x = X_INIT
                 y = Y_INIT
-
+                
 
             # OR Direct coordinates (works with high sensitivity, but not recommended)
             # x = event.pos[0]
